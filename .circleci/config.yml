@@ -91,6 +91,10 @@
           description: |
             Name of the EKS cluster
           type: string
+        aws-region:
+          description: |
+            Region
+          type: string                    
       steps:
         - checkout
         - aws-eks/update-kubeconfig-with-authenticator:
