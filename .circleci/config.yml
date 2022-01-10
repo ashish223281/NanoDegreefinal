@@ -117,6 +117,7 @@
             requires:
               - build-push-docker-image
         - create-deployment:
+            aws-region: us-east-1
             cluster-name: capstonecluster
             requires:
               - build-push-docker-image            
