@@ -52,6 +52,12 @@
             Name of the EKS cluster
           type: string
           default: capstonecluster
+        aws-region:
+          description: |
+            Region
+          type: string
+          default: us-east-1          
+          
       steps:
         - run:
             name: Install the eksctl tool
@@ -73,6 +79,7 @@
         - aws-eks/install-aws-iam-authenticator:
             release-tag: ''
         - aws-eks/create-cluster:
+            aws-region: us-east-1
             cluster-name: capstonecluster
             node-type: t3.medium
             show-eksctl-command: true
@@ -128,6 +135,7 @@
             - lint-app
         - create-cluster:
             cluster-name: capstonecluster
+            aws-region: us-east-1
             requires:
               - build-push-docker-image
         #- create-deployment:
