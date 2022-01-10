@@ -124,5 +124,5 @@
             cluster-name: capstonecluster
             aws-region: us-east-1
             requires:
-              - build-push-docker-image            
+              - create-cluster            
         
