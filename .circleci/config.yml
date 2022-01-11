@@ -1,16 +1,20 @@
   version: 2.1
   orbs:
+    aws-cli: circleci/aws-cli@2.0.3  
     aws-eks: circleci/aws-eks@1.1.0
     kubernetes: circleci/kubernetes@1.3.0
   
-  parameters:
-    docker_image:
-      type: string
-      default: python:3.10.0-base
+executors:
+  python:
+    docker:
+      - image: circleci/python:3.7.3-stretch
+  aws:
+    docker:
+      - image: amazon/aws-cli
 
   jobs:
     lint-app:
-      executor: aws-eks/python3
+      executor: python
       steps:
         - checkout
         - run:
@@ -26,7 +30,7 @@
               make lint  
 
     build-push-docker-image:
-      executor: aws-eks/python3
+      machine: true
       working_directory: ~/app
       steps:
         - checkout
@@ -78,6 +82,9 @@
           default: capstonecluster
 
       steps:
+      - checkout
+      - aws-eks/install-aws-iam-authenticator:
+          release-tag: ''      
         - run:
             name: Install the eksctl tool
             command: |
@@ -95,8 +102,6 @@
               fi
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
-        - aws-eks/install-aws-iam-authenticator:
-            release-tag: ''
         - aws-eks/create-cluster:
             cluster-name: capstonecluster
             node-type: t3.medium
