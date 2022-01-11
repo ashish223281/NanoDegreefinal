@@ -43,6 +43,30 @@
               docker tag capstonedocker ashish223281/capstonedocker
               docker push ashish223281/capstonedocker
 
+
+# Test the Cluster
+    test-cluster:
+      executor: aws-eks/python3
+      parameters:
+        cluster-name:
+          description: |
+            Name of the EKS cluster
+          type: string
+      steps:
+        - kubernetes/install
+        - aws-eks/update-kubeconfig-with-authenticator:
+            cluster-name: << parameters.cluster-name >>
+        - run:
+            command: |
+              echo "testing cluster"
+              kubectl get services
+              kubectl get pods
+              kubectl describe pods
+              kubectl get nodes
+              kubectl get deployment
+              kubectl get services -o wide
+            name: Test cluster
+
     # Creation of Cluster
     create-cluster:
       executor: aws-eks/python3
@@ -52,12 +76,6 @@
             Name of the EKS cluster
           type: string
           default: capstonecluster
-        aws-region:
-          description: |
-            Region
-          type: string
-          default: us-east-1          
-          
       steps:
         - run:
             name: Install the eksctl tool
@@ -79,7 +97,6 @@
         - aws-eks/install-aws-iam-authenticator:
             release-tag: ''
         - aws-eks/create-cluster:
-            aws-region: us-east-1
             cluster-name: capstonecluster
             node-type: t3.medium
             show-eksctl-command: true
@@ -91,15 +108,10 @@
           description: |
             Name of the EKS cluster
           type: string
-        aws-region:
-          description: |
-            Region
-          type: string                    
       steps:
         - checkout
         - aws-eks/update-kubeconfig-with-authenticator:
             cluster-name: << parameters.cluster-name >>
-            aws-region: << parameters.aws-region >>
             install-kubectl: true
         - kubernetes/create-or-update-resource:
             get-rollout-status: true
@@ -117,12 +129,14 @@
             - lint-app
         - create-cluster:
             cluster-name: capstonecluster
-            aws-region: us-east-1
             requires:
               - build-push-docker-image
+        - test-cluster:
+            cluster-name: capstonecluster
+            requires:
+              - create-cluster              
         - create-deployment:
             cluster-name: capstonecluster
-            aws-region: us-east-1
             requires:
-              - create-cluster            
+              - test-cluster            
         
