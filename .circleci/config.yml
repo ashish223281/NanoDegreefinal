@@ -12,10 +12,6 @@
     lint-app:
       executor: aws-eks/python3
       steps:
-        - run:          
-            name: SSH or Git CLI client                 
-            command: |            
-              yum install -y openssh-client git
         - checkout
         - run:
             name: install dependencies
@@ -80,6 +76,7 @@
             Name of the EKS cluster
           type: string
           default: capstonecluster
+
       steps:
         - run:
             name: Install the eksctl tool
