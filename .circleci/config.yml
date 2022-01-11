@@ -12,6 +12,10 @@
     lint-app:
       executor: aws-eks/python3
       steps:
+        - run:          
+            name: SSH or Git CLI client                 
+            command: |            
+              yum install -y openssh-client git
         - checkout
         - run:
             name: install dependencies
