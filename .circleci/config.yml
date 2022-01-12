@@ -40,12 +40,12 @@
               #Login to docker hub
               docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
               # Build image and add a descriptive tag
-              docker build --tag=capstonedocker .
+              docker build --tag=capstonedocker1 .
               # List docker images
               docker image ls
               # Tag and push image to a docker repository
-              docker tag capstonedocker ashish223281/capstonedocker
-              docker push ashish223281/capstonedocker
+              docker tag capstonedocker1 ashish223281/capstonedocker1
+              docker push ashish223281/capstonedocker1
 
 
 # Test the Cluster
@@ -79,7 +79,7 @@
           description: |
             Name of the EKS cluster
           type: string
-          default: capstonecluster
+          default: capstonecluster1
 
       steps:
         - checkout
@@ -103,7 +103,7 @@
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
         - aws-eks/create-cluster:
-            cluster-name: capstonecluster
+            cluster-name: capstonecluster1
             node-type: t3.medium
             show-eksctl-command: true
 
@@ -122,27 +122,27 @@
         - kubernetes/create-or-update-resource:
             get-rollout-status: true
             resource-file-path: deployments/nginx-deployment.yaml
-            resource-name: deployments/mycapstone
+            resource-name: deployments/mycapstone1
         - kubernetes/create-or-update-resource:
             resource-file-path: deployments/app-service.yaml
 
   workflows:
     deployment:
       jobs:
-        #- lint-app
-        #- build-push-docker-image:
-         #   requires:
-          #  - lint-app
-        #- create-cluster:
-         #   cluster-name: capstonecluster
-          #  requires:
-           #   - build-push-docker-image
-        #- test-cluster:
-         #   cluster-name: capstonecluster
-          #  requires:
-           #   - create-cluster              
+        - lint-app
+        - build-push-docker-image:
+            requires:
+            - lint-app
+        - create-cluster:
+            cluster-name: capstonecluster1
+            requires:
+              - build-push-docker-image
+        - test-cluster:
+            cluster-name: capstonecluster1
+            requires:
+              - create-cluster              
         - create-deployment:
-            cluster-name: capstonecluster
-            #requires:
-             # - test-cluster            
+            cluster-name: capstonecluster1
+            requires:
+              - test-cluster            
         
