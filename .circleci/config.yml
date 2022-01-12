@@ -123,6 +123,14 @@
         - kubernetes/install
         - aws-eks/update-kubeconfig-with-authenticator:
             cluster-name: << parameters.cluster-name >>
+            cluster-authentication-role-arn:
+              description: |
+                To assume a role for cluster authentication, specify an IAM role ARN with
+                this option. For example, if you created a cluster while assuming an IAM
+                role, then you must also assume that role to connect to the cluster the
+                first time.
+              type: string
+              default: "arn:aws:iam::577333125727:role/eksctl-capstonecluster1-cluster-ServiceRole-1LK1ZVRU0VE02"            
             install-kubectl: true
         - kubernetes/create-or-update-resource:
             get-rollout-status: true
@@ -135,13 +143,6 @@
     deployment:
       jobs:
         - lint-app
-        - build-push-docker-image:
-            requires:
-            - lint-app
-        - create-cluster:
-            cluster-name: capstonecluster1
-            requires:
-              - build-push-docker-image
         - create-deployment:
             cluster-name: capstonecluster1
             requires:
