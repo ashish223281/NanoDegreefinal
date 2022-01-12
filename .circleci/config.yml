@@ -130,7 +130,7 @@
                 role, then you must also assume that role to connect to the cluster the
                 first time.
               type: string
-              default: "arn:aws:iam::577333125727:role/eksctl-capstonecluster1-cluster-ServiceRole-1LK1ZVRU0VE02"            
+              default: arn:aws:iam::577333125727:role/eksctl-capstonecluster1-cluster-ServiceRole-1LK1ZVRU0VE02            
             install-kubectl: true
         - kubernetes/create-or-update-resource:
             get-rollout-status: true
