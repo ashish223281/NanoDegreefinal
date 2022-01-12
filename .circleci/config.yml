@@ -125,10 +125,7 @@
             cluster-name: << parameters.cluster-name >>
             cluster-authentication-role-arn:
               description: |
-                To assume a role for cluster authentication, specify an IAM role ARN with
-                this option. For example, if you created a cluster while assuming an IAM
-                role, then you must also assume that role to connect to the cluster the
-                first time.
+                To assume a 
               type: string
               default: arn:aws:iam::577333125727:role/eksctl-capstonecluster1-cluster-ServiceRole-1LK1ZVRU0VE02            
             install-kubectl: true
