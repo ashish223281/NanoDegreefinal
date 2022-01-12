@@ -139,6 +139,6 @@
         - create-deployment:
             cluster-name: capstonecluster1
             requires:
-              - create-cluster             
+              - lint-app             
            
         
