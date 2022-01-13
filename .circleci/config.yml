@@ -130,17 +130,17 @@
     deployment:
       jobs:
         - lint-app
-        - build-push-docker-image:
-            requires:
-            - lint-app
-        - create-cluster:
-            cluster-name: capstonecluster3
-            requires:
-              - build-push-docker-image
+  #      - build-push-docker-image:
+   #         requires:
+    #        - lint-app
+   #     - create-cluster:
+    #        cluster-name: capstonecluster3
+     #       requires:
+      #        - build-push-docker-image
         - create-deployment:
             cluster-name: capstonecluster3
             requires:
-              - create-cluster
+              - lint-app
         - aws-eks/update-container-image:
             cluster-name: capstonecluster3
             container-image-updates: mycapstone1=ashish223281/capstonedocker3
