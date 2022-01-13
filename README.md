@@ -1,3 +1,5 @@
+[![ashish223281](https://circleci.com/gh/ashish223281/NanoDegreefinal.svg?style=svg)](https://circleci.com/gh/ashish223281/NanoDegreefinal)
+
 To develop a capstone project which shows the below capabilities demonstratin the deployment strategy using Rolling deployment
 
 1)Perform linting of the application
