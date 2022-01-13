@@ -21,7 +21,7 @@ spec:
         app: mycapstone1
     spec:
       containers:
-        - image: ashish223281/capstonedocker1:v1
+        - image: ashish223281/capstonedocker3
           imagePullPolicy: Always
           name: mycapstone1
           ports:

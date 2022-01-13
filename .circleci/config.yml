@@ -40,12 +40,12 @@
               #Login to docker hub
               docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
               # Build image and add a descriptive tag
-              docker build --tag=capstonedocker .
+              docker build --tag=capstonedocker3 .
               # List docker images
               docker image ls
               # Tag and push image to a docker repository
-              docker tag capstonedocker ashish223281/capstonedocker
-              docker push ashish223281/capstonedocker
+              docker tag capstonedocker3 ashish223281/capstonedocker3
+              docker push ashish223281/capstonedocker3
 
 
 # Test the Cluster
@@ -143,7 +143,7 @@
               - create-cluster
         - aws-eks/update-container-image:
             cluster-name: capstonecluster3
-            container-image-updates: mycapstone1=ashish223281/capstonedocker
+            container-image-updates: mycapstone1=ashish223281/capstonedocker3
             post-steps:
                 - kubernetes/delete-resource:
                     resource-names: mycapstone1
