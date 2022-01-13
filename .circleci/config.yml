@@ -79,7 +79,7 @@
           description: |
             Name of the EKS cluster
           type: string
-          default: capstonecluster
+          default: capstonecluster3
 
       steps:
         - checkout
@@ -103,7 +103,7 @@
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
         - aws-eks/create-cluster:
-            cluster-name: capstonecluster
+            cluster-name: capstonecluster3
             node-type: t3.medium
             show-eksctl-command: true
 
@@ -129,20 +129,32 @@
   workflows:
     deployment:
       jobs:
-      #  - lint-app
-       # - build-push-docker-image:
-        #    requires:
-         #   - lint-app
-    #    - create-cluster:
-     #       cluster-name: capstonecluster
-      #      requires:
-       #       - build-push-docker-image
-        #- test-cluster:
-         #   cluster-name: capstonecluster
-          #  requires:
-           #   - create-cluster              
+        - lint-app
+        - build-push-docker-image:
+            requires:
+            - lint-app
+        - create-cluster:
+            cluster-name: capstonecluster3
+            requires:
+              - build-push-docker-image
         - create-deployment:
-            cluster-name: capstonecluster
-            #requires:
-             # - test-cluster            
+            cluster-name: capstonecluster3
+            requires:
+              - create-cluster
+        - aws-eks/update-container-image:
+            cluster-name: capstonecluster3
+            container-image-updates: mycapstone1=ashish223281/capstonedocker
+            post-steps:
+                - kubernetes/delete-resource:
+                    resource-names: mycapstone1
+                    resource-types: deployment
+                    wait: true            
+            record: true
+            resource-name: deployment/mycapstone1
+            requires:
+              - create-deployment 
+        - test-cluster:
+            cluster-name: capstonecluster3
+            requires: 
+              - aws-eks/update-container-image                                      
         
