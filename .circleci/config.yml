@@ -137,24 +137,24 @@
     #        cluster-name: capstonecluster3
      #       requires:
       #        - build-push-docker-image
-        - create-deployment:
-            cluster-name: capstonecluster3
-            requires:
-              - lint-app
-        - aws-eks/update-container-image:
-            cluster-name: capstonecluster3
-            container-image-updates: mycapstone1=ashish223281/capstonedocker3
-            post-steps:
-                - kubernetes/delete-resource:
-                    resource-names: mycapstone1
-                    resource-types: deployment
-                    wait: true            
-            record: true
-            resource-name: deployment/mycapstone1
-            requires:
-              - create-deployment 
-        - test-cluster:
-            cluster-name: capstonecluster3
-            requires: 
-              - aws-eks/update-container-image                                      
+    #    - create-deployment:
+     #       cluster-name: capstonecluster3
+      #      requires:
+       #       - lint-app
+      #  - aws-eks/update-container-image:
+       #     cluster-name: capstonecluster3
+        #    container-image-updates: mycapstone1=ashish223281/capstonedocker3
+         #   post-steps:
+          #      - kubernetes/delete-resource:
+           #         resource-names: mycapstone1
+            #        resource-types: deployment
+             #       wait: true            
+            #record: true
+            #resource-name: deployment/mycapstone1
+            #requires:
+             # - create-deployment 
+        #- test-cluster:
+         #   cluster-name: capstonecluster3
+          #  requires: 
+           #   - aws-eks/update-container-image                                      
         
